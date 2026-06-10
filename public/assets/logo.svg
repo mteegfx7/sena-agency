@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="120" height="32" role="img" aria-label="Sena Agency">
+  <text
+    x="0"
+    y="26"
+    font-family="'Courier New', Courier, monospace"
+    font-size="28"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#FF4D00"
+    text-rendering="geometricPrecision"
+  >SENA</text>
+</svg>
