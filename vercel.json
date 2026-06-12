@@ -2,9 +2,6 @@
   "framework": null,
   "buildCommand": null,
   "outputDirectory": ".",
-  "rewrites": [
-    { "source": "/", "destination": "/sena-agency.html" }
-  ],
   "headers": [
     {
       "source": "/(.*)",
