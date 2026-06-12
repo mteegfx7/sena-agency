@@ -59,22 +59,25 @@
 
 .service-card__name {
   font-family: var(--font-heading);
-  font-size: var(--text-2xl);
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: var(--weight-bold);
   color: var(--color-text);
   line-height: 1.2;
 }
 
 .service-card__desc {
-  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-regular);
   color: var(--color-text-muted);
   line-height: 1.65;
   flex: 1;
 }
 
 .service-card__link {
-  font-size: var(--text-sm);
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-semibold);
   color: var(--color-accent);
   letter-spacing: 0.02em;
   transition: gap var(--duration-fast), letter-spacing var(--duration-base);

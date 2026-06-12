@@ -31,7 +31,9 @@
 .footer__logo:hover { opacity: 1; }
 
 .footer__tagline {
-  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-regular);
   color: var(--color-text-muted);
   line-height: 1.7;
 }
@@ -39,9 +41,9 @@
 /* Column */
 .footer__col-title {
   font-family: var(--font-heading);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-text);
   margin-bottom: var(--space-4);
@@ -55,7 +57,9 @@
 
 .footer__col a,
 .footer__col span {
-  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: var(--weight-regular);
   color: var(--color-text-muted);
   transition: color var(--duration-fast);
 }
@@ -71,7 +75,9 @@
 }
 
 .footer__copy {
-  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: var(--weight-regular);
   color: var(--color-text-muted);
 }
 
