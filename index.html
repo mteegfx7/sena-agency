@@ -940,14 +940,11 @@
     ======================================================== */
     .work {
       background-color: var(--color-bg);
-      background-image: radial-gradient(
-        circle at 85% 50%,
-        rgba(255, 75, 0, 0.22) 0%,
-        transparent 55%
-      );
     }
 
     .work__container {
+      position: relative;
+      z-index: 1;
       max-width: var(--container-max);
       margin-inline: auto;
       padding-inline: var(--container-padding);
@@ -1089,19 +1086,39 @@
       }
     }
 
+    /* ── Shared glow: Work + About ── */
+    .glow-section-wrap {
+      position: relative;
+    }
+
+    .glow-section-wrap::before {
+      content: '';
+      position: absolute;
+      right: -35%;
+      top: 0;
+      width: 90%;
+      height: 100%;
+      background: radial-gradient(
+        ellipse at 100% 45%,
+        rgba(255, 72, 0, 0.28) 0%,
+        rgba(255, 72, 0, 0.16) 28%,
+        rgba(255, 72, 0, 0.06) 52%,
+        transparent 75%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
     /* ========================================================
        ABOUT
     ======================================================== */
     .about {
       background-color: var(--color-surface);
-      background-image: radial-gradient(
-        circle at 85% 45%,
-        rgba(255, 75, 0, 0.16) 0%,
-        transparent 55%
-      );
     }
 
     .about__container {
+      position: relative;
+      z-index: 1;
       max-width: var(--container-max);
       margin-inline: auto;
       padding-inline: var(--container-padding);
@@ -1830,6 +1847,9 @@
       </div>
     </section>
 
+    <!-- ===================== WORK + ABOUT (shared glow wrapper) ===================== -->
+    <div class="glow-section-wrap">
+
     <!-- ===================== WORK ===================== -->
     <section class="work" id="work" aria-labelledby="workHeading">
       <div class="work__container">
@@ -1949,6 +1969,8 @@
         </div>
       </div>
     </section>
+
+    </div><!-- /.glow-section-wrap -->
 
     <!-- ===================== PROCESS ===================== -->
     <section class="process" id="process" aria-labelledby="processHeading">
