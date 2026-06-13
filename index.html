@@ -1689,101 +1689,6 @@
         justify-content: center;
       }
     }
-
-    /* ========================================================
-       PROGRESSIVE BLUR OVERLAYS
-    ======================================================== */
-    .blur-overlay {
-      position: fixed;
-      left: 0;
-      right: 0;
-      pointer-events: none;
-      z-index: 98;
-      overflow: hidden;
-    }
-
-    .blur-overlay--top    { top: 0;    height: 160px; }
-    .blur-overlay--bottom { bottom: 0; height: 90px; }
-
-    .blur-overlay > div {
-      position: absolute;
-      inset: 0;
-    }
-
-    /* ── Top: 4 blur steps + 1 color gradient ── */
-    .blur-overlay--top > div:nth-child(1) {
-      backdrop-filter: blur(1px);
-      -webkit-backdrop-filter: blur(1px);
-      mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
-    }
-    .blur-overlay--top > div:nth-child(2) {
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
-    }
-    .blur-overlay--top > div:nth-child(3) {
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 50%);
-    }
-    .blur-overlay--top > div:nth-child(4) {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      mask-image: linear-gradient(to bottom, black 0%, transparent 28%);
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 28%);
-    }
-    .blur-overlay--top > div:nth-child(5) {
-      background: linear-gradient(to bottom,
-        rgba(5, 5, 5, 0.95) 0%,
-        rgba(5, 5, 5, 0.68) 25%,
-        rgba(5, 5, 5, 0.28) 55%,
-        rgba(5, 5, 5, 0.00) 100%
-      );
-    }
-
-    /* ── Bottom: 4 blur steps + 1 color gradient ── */
-    .blur-overlay--bottom > div:nth-child(1) {
-      backdrop-filter: blur(1px);
-      -webkit-backdrop-filter: blur(1px);
-      mask-image: linear-gradient(to top, black 0%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
-    }
-    .blur-overlay--bottom > div:nth-child(2) {
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      mask-image: linear-gradient(to top, black 0%, transparent 75%);
-      -webkit-mask-image: linear-gradient(to top, black 0%, transparent 75%);
-    }
-    .blur-overlay--bottom > div:nth-child(3) {
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      mask-image: linear-gradient(to top, black 0%, transparent 50%);
-      -webkit-mask-image: linear-gradient(to top, black 0%, transparent 50%);
-    }
-    .blur-overlay--bottom > div:nth-child(4) {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      mask-image: linear-gradient(to top, black 0%, transparent 28%);
-      -webkit-mask-image: linear-gradient(to top, black 0%, transparent 28%);
-    }
-    .blur-overlay--bottom > div:nth-child(5) {
-      background: linear-gradient(to top,
-        rgba(5, 5, 5, 0.90) 0%,
-        rgba(5, 5, 5, 0.60) 25%,
-        rgba(5, 5, 5, 0.22) 55%,
-        rgba(5, 5, 5, 0.00) 100%
-      );
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .blur-overlay > div {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
-    }
   </style>
 </head>
 <body>
@@ -1792,14 +1697,6 @@
   <div class="cursor" id="cursor" aria-hidden="true">
     <div class="cursor__dot" id="cursorDot"></div>
     <div class="cursor__ring" id="cursorRing"></div>
-  </div>
-
-  <!-- Progressive blur overlays — fixed, pointer-events:none, z-index 98 (below nav 100) -->
-  <div class="blur-overlay blur-overlay--top" aria-hidden="true">
-    <div></div><div></div><div></div><div></div><div></div>
-  </div>
-  <div class="blur-overlay blur-overlay--bottom" aria-hidden="true">
-    <div></div><div></div><div></div><div></div><div></div>
   </div>
 
   <!-- ===================== NAV ===================== -->
