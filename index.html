@@ -304,6 +304,76 @@
     }
 
     /* ========================================================
+       ANIMATED GRADIENT BORDER — PORTFOLIO CARDS
+    ======================================================== */
+
+    /* Registers --card-border-angle as animatable CSS property */
+    @property --card-border-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    @keyframes card-border-rotate {
+      to { --card-border-angle: 360deg; }
+    }
+
+    /* Extend work-card with isolation + box-shadow transition */
+    .work-card {
+      isolation: isolate;
+      transition:
+        opacity     var(--duration-base),
+        transform   var(--duration-base) var(--ease-smooth),
+        box-shadow  var(--duration-base) var(--ease-smooth);
+    }
+
+    /* Gradient border ring — masked to 1px edge, visible only on hover */
+    .work-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(
+        from var(--card-border-angle),
+        #ff4d00  0%,
+        #ff7a18 25%,
+        rgba(255, 255, 255, 0.82) 50%,
+        #ff7a18 75%,
+        #ff4d00 100%
+      );
+      /* Donut mask: transparent inside (content-box), opaque ring (padding area) */
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-smooth);
+    }
+
+    .work-card:hover::before {
+      opacity: 1;
+      animation: card-border-rotate 4s linear infinite;
+    }
+
+    .work-card:hover {
+      box-shadow:
+        0 0 18px rgba(255, 77, 0, 0.20),
+        0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Disable on prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .work-card::before { animation: none !important; }
+    }
+
+    /* ========================================================
        CUSTOM CURSOR
     ======================================================== */
     .cursor {
