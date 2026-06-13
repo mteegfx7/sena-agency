@@ -2128,7 +2128,7 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <script>
     (function () {
       'use strict';
@@ -2136,10 +2136,9 @@
       /* ── Lenis smooth scroll ── */
       var lenis = new Lenis({
         duration: 1.1,
-        easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
-        wheelMultiplier: 1,
-        touchMultiplier: 1.5,
-        infinite: false,
+        lerp: 0.08,
+        smoothWheel: true,
+        smoothTouch: false,
       });
       (function rafLoop(time) {
         lenis.raf(time);
