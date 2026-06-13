@@ -233,7 +233,7 @@
     /* Scroll reveal */
     [data-reveal] {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(16px);
       transition:
         opacity 500ms var(--ease-smooth),
         transform 500ms var(--ease-smooth);
@@ -241,6 +241,7 @@
     [data-reveal].is-revealed {
       opacity: 1;
       transform: translateY(0);
+      will-change: auto;
     }
 
     /* Disable heavy continuous animations on mobile */
@@ -524,7 +525,6 @@
         left 0.3s var(--ease-smooth),
         width 0.3s var(--ease-smooth),
         opacity 0.15s ease;
-      will-change: left, width, opacity;
     }
 
     /* ── Indicator: accent underline on active link ── */
@@ -541,7 +541,6 @@
         left 0.35s var(--ease-smooth),
         width 0.35s var(--ease-smooth),
         opacity 0.2s ease;
-      will-change: left, width, opacity;
     }
 
     @media (max-width: 767px) {
@@ -573,7 +572,6 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-repeat: repeat;
       animation: grain 8s steps(3) infinite;
-      will-change: transform;
     }
 
     @keyframes grain {
@@ -773,7 +771,6 @@
       left: 0;
       pointer-events: none;
       animation: flipWordExit 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      will-change: transform, opacity;
     }
 
     /* Each letter animates in — no per-letter GPU layer */
@@ -786,12 +783,10 @@
       from {
         opacity: 1;
         transform: translateY(0) translateX(0) scale(1);
-        filter: blur(0px);
       }
       to {
         opacity: 0;
-        transform: translateY(-30px) translateX(20px) scale(1.4);
-        filter: blur(4px);
+        transform: translateY(-24px) translateX(16px) scale(1.2);
       }
     }
 
@@ -799,12 +794,10 @@
       from {
         opacity: 0;
         transform: translateY(8px);
-        filter: blur(3px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
-        filter: blur(0px);
       }
     }
 
@@ -841,6 +834,7 @@
       flex-direction: column;
       gap: var(--space-4);
       overflow: hidden;
+      contain: layout style;
       transition:
         transform 0.35s var(--ease-smooth),
         border-color 0.35s var(--ease-smooth),
@@ -999,6 +993,7 @@
       border-radius: 10px;
       overflow: hidden;
       background-color: var(--color-surface);
+      contain: layout style;
       transition: opacity var(--duration-base), transform var(--duration-base) var(--ease-smooth);
     }
     .work-card.is-hidden {
@@ -1507,7 +1502,6 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
       background-repeat: repeat;
       animation: grain 8s steps(3) infinite;
-      will-change: transform;
     }
 
     .cta__container {
@@ -2141,10 +2135,10 @@
 
       /* ── Lenis smooth scroll ── */
       var lenis = new Lenis({
-        duration: 1.2,
+        duration: 1.1,
         easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
         wheelMultiplier: 1,
-        touchMultiplier: 2,
+        touchMultiplier: 1.5,
         infinite: false,
       });
       (function rafLoop(time) {
@@ -2213,14 +2207,25 @@
         var revealObserver = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-              entry.target.classList.add('is-revealed');
-              revealObserver.unobserve(entry.target);
+              var el = entry.target;
+              el.style.willChange = 'transform, opacity';
+              el.classList.add('is-revealed');
+              el.addEventListener('transitionend', function cleanup() {
+                el.style.willChange = 'auto';
+                el.removeEventListener('transitionend', cleanup);
+              }, { once: true });
+              revealObserver.unobserve(el);
             }
           });
-        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-        revealEls.forEach(function (el, i) {
-          el.style.transitionDelay = (i % 4) * 80 + 'ms';
+        /* Stagger per-section, not globally */
+        var sectionCounters = new Map();
+        revealEls.forEach(function (el) {
+          var section = el.closest('section') || el.parentElement;
+          var idx = sectionCounters.get(section) || 0;
+          el.style.transitionDelay = (idx % 4) * 70 + 'ms';
+          sectionCounters.set(section, idx + 1);
           revealObserver.observe(el);
         });
       } else {
@@ -2228,6 +2233,24 @@
           el.classList.add('is-revealed');
         });
       }
+
+      /* ── Pause grain animations when section is off-screen ── */
+      (function pauseGrainOffScreen() {
+        if (!('IntersectionObserver' in window)) return;
+        [
+          { grain: '.hero__grain',  section: '#hero' },
+          { grain: '.cta__bg',      section: '#contact' }
+        ].forEach(function (pair) {
+          var grain   = document.querySelector(pair.grain);
+          var section = document.querySelector(pair.section);
+          if (!grain || !section) return;
+          var obs = new IntersectionObserver(function (entries) {
+            grain.style.animationPlayState =
+              entries[0].isIntersecting ? 'running' : 'paused';
+          }, { threshold: 0 });
+          obs.observe(section);
+        });
+      })();
 
       /* ── Work filter ── */
       var filterBtns = document.querySelectorAll('.filter-btn');
